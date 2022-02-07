@@ -8,8 +8,7 @@ class JsonContactsApi {
   JsonContactsApi(this._assetBundle);
 
   Future<Map<String, dynamic>> fetch() async {
-    await Future.delayed(const Duration(seconds: 1));
-    final data = await _assetBundle.loadString('assets/contacts.json');
+    final data = await _assetBundle.loadString('contacts');
     return jsonDecode(data);
   }
 }

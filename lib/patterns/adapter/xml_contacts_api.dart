@@ -7,8 +7,7 @@ class XmlContactsApi {
   XmlContactsApi(this._assetBundle);
 
   Future<XmlDocument> fetch() async {
-    await Future.delayed(const Duration(seconds: 1));
-    final data = await _assetBundle.loadString('assets/contacts.xml');
+    final data = await _assetBundle.loadString('contacts');
     return XmlDocument.parse(data);
   }
 }
