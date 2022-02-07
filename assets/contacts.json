@@ -1,0 +1,28 @@
+{
+  "contacts": [
+    {
+      "name": "John Doe",
+      "phone": "(99) 47563-1231"
+    },
+    {
+      "name": "Sivan Rax",
+      "phone": "(99) 98553-9796"
+    },
+    {
+      "name": "Breaking Jones",
+      "phone": "(99) 56488-1111"
+    },
+    {
+      "name": "Paul Gran",
+      "phone": "(99) 95743-9695"
+    },
+    {
+      "name": "Summer Dean",
+      "phone": "(99) 09889-5644"
+    },
+    {
+      "name": "Koi no Hai",
+      "phone": "(99) 76764-9786"
+    }
+  ]
+}
