@@ -1,9 +1,5 @@
 import 'package:design_patterns/patterns/adapter/contact.dart';
-import 'package:design_patterns/patterns/adapter/contacts_adapter.dart';
-import 'package:design_patterns/patterns/adapter/json_contacts_adapter.dart';
-import 'package:design_patterns/patterns/adapter/json_contacts_api.dart';
-import 'package:design_patterns/patterns/adapter/xml_contacts_adapter.dart';
-import 'package:design_patterns/patterns/adapter/xml_contacts_api.dart';
+import 'package:design_patterns/patterns/factory_method/contacts_adapter_factory.dart';
 import 'package:flutter/material.dart';
 
 class ContactsPage extends StatelessWidget {
@@ -27,18 +23,10 @@ class ContactsPage extends StatelessWidget {
         body: TabBarView(
           children: [
             _ContactsContent(
-              contactsAdapter: JsonContactsAdapter(
-                JsonContactsApi(
-                  DefaultAssetBundle.of(context),
-                ),
-              ),
+              contactsAdapterFactory: JsonContactsAdapterFactory(),
             ),
             _ContactsContent(
-              contactsAdapter: XmlContactsAdapter(
-                XmlContactsApi(
-                  DefaultAssetBundle.of(context),
-                ),
-              ),
+              contactsAdapterFactory: XmlContactsAdapterFactory(),
             ),
           ],
         ),
@@ -48,30 +36,34 @@ class ContactsPage extends StatelessWidget {
 }
 
 class _ContactsContent extends StatefulWidget {
-  final ContactsAdapter contactsAdapter;
+  final ContactsAdapterFactory contactsAdapterFactory;
 
   const _ContactsContent({
     Key? key,
-    required this.contactsAdapter,
+    required this.contactsAdapterFactory,
   }) : super(key: key);
 
   @override
   State<_ContactsContent> createState() => _ContactsContentState();
 }
 
-class _ContactsContentState extends State<_ContactsContent> {
+class _ContactsContentState extends State<_ContactsContent>
+    with AutomaticKeepAliveClientMixin {
   List<Contact>? _contacts;
 
   @override
   void initState() {
     super.initState();
-    widget.contactsAdapter
+    final adapter = widget.contactsAdapterFactory.get(context);
+    adapter
         .fetchContacts()
         .then((contacts) => setState(() => _contacts = contacts));
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     if (_contacts == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -87,4 +79,7 @@ class _ContactsContentState extends State<_ContactsContent> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
