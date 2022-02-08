@@ -1,5 +1,7 @@
 import 'package:design_patterns/patterns/adapter/contact.dart';
 import 'package:design_patterns/patterns/factory_method/contacts_adapter_factory.dart';
+import 'package:design_patterns/patterns/singleton/recent_contacts_singleton.dart';
+import 'package:design_patterns/widgets/contact_title_widget.dart';
 import 'package:flutter/material.dart';
 
 class ContactsPage extends StatelessWidget {
@@ -49,6 +51,7 @@ class _ContactsContent extends StatefulWidget {
 
 class _ContactsContentState extends State<_ContactsContent>
     with AutomaticKeepAliveClientMixin {
+  final _recentContactsSingleton = RecentContactsSingleton();
   List<Contact>? _contacts;
 
   @override
@@ -72,9 +75,11 @@ class _ContactsContentState extends State<_ContactsContent>
       itemCount: _contacts!.length,
       itemBuilder: (_, index) {
         final contact = _contacts![index];
-        return ListTile(
-          title: Text(contact.name),
-          subtitle: Text(contact.phone),
+        return ContactTileWidget(
+          contact: contact,
+          onTap: () {
+            _recentContactsSingleton.addRecentContact(contact);
+          },
         );
       },
     );
